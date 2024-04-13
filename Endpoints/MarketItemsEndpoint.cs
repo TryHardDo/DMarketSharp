@@ -7,7 +7,7 @@ namespace DMarketSharp.Endpoints;
 ///     The response format is in coins (cents for USD).
 ///     'gameId' param values are: CS:GO - a8db, Team Fortress 2 - tf2, Dota 2 - 9a92, Rust - rust.
 /// </summary>
-public class MarketItems(string gameId, string currencyCode) : EndpointBase
+public class MarketItems(string gameId, string currencyCode) : ApiRequestBase
 {
 	// Required
 	public string GameId { get; } = gameId;
@@ -44,6 +44,4 @@ public class MarketItems(string gameId, string currencyCode) : EndpointBase
 		types = Types == null ? null : string.Join(',', Types),
 		cursor = Cursor
 	};
-
-	public override object? BodyContent => null;
 }

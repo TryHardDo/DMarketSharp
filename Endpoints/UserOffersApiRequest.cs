@@ -7,7 +7,7 @@ namespace DMarketSharp.Endpoints;
 ///     The price amount format is in USD i.e. 0.5 is 50 cents.
 ///     'gameId' param values are: CS:GO - a8db, Team Fortress 2 - tf2, Dota 2 - 9a92, Rust - rust.
 /// </summary>
-public class UserOffersEndpoint : EndpointBase
+public class UserOffersApiRequest : ApiRequestBase
 {
 	public string? GameId { get; init; } = null;
 	public string Status { get; init; } = "OfferStatusDefault";
@@ -34,6 +34,4 @@ public class UserOffersEndpoint : EndpointBase
 		{ "Limit", Limit },
 		{ "Cursor", Cursor }
 	};
-
-	public override object? BodyContent => null;
 }

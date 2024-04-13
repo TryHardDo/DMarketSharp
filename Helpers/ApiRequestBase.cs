@@ -5,14 +5,14 @@ using Flurl;
 
 namespace DMarketSharp.Helpers;
 
-public abstract class EndpointBase
+public abstract class ApiRequestBase
 {
 	private const string BaseUri = "https://api.dmarket.com";
 
 	public abstract HttpMethod Method { get; }
 	public abstract string RelativePath { get; }
-	public abstract object? UriQueryParams { get; }
-	public abstract object? BodyContent { get; }
+	public virtual object? UriQueryParams => null;
+	public virtual object? BodyContent => null;
 
 	public HttpRequestMessage ConstructBaseHttpRequestMessage()
 	{

@@ -8,13 +8,12 @@ namespace DMarketSharp.Endpoints;
 ///     As a result, the selected asset is locked and the newly-created offer appears in the Market and on Sale tabs.
 ///     The price amount format is in USD, i.e. 0.5 is 50 cents.
 /// </summary>
-public class UserOfferCreateEndpoint : EndpointBase
+public class UserOfferCreateApiRequest : ApiRequestBase
 {
 	public Dictionary<string, object> PricedAssetsCache { get; } = [];
 
 	public override HttpMethod Method => HttpMethod.Post;
 	public override string RelativePath => "/marketplace-api/v1/user-offers/create";
-	public override object? UriQueryParams => null;
 
 	public override object? BodyContent => new
 	{

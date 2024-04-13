@@ -8,7 +8,7 @@ namespace DMarketSharp.Helpers;
 ///     This class if a helper class to easily construct authorization signatures for
 ///     the API server.
 ///     In normal scenarios you don't need to use this class directly.
-///     Use the <see cref="ApiClient" /> to make guided calls to the API.
+///     Use the <see cref="DMarketApiClient" /> to make guided calls to the API.
 /// </summary>
 /// <param name="apiKey">The private API key wrapped as an <see cref="ApiKey"/> struct.</param>
 /// <param name="method">The request's method to be signed.</param>

@@ -10,15 +10,15 @@ namespace DMarketSharp;
 ///     Class for interacting with the DMarket API fast and easily.
 /// </summary>
 /// <param name="apiKey">The DMarket private API key wrapped as <see cref="ApiKey" /> struct.</param>
-public class ApiClient(ApiKey apiKey) : HttpClient
+public class DMarketApiClient(ApiKey apiKey) : HttpClient
 {
 	private const string BaseUri = "https://api.dmarket.com";
 
 	#region Synchronized methods
 
-	public HttpResponseMessage CallEndpoint(EndpointBase endpoint)
+	public HttpResponseMessage CallEndpoint(ApiRequestBase apiRequest)
 	{
-		var baseRequestMessage = endpoint.ConstructBaseHttpRequestMessage();
+		var baseRequestMessage = apiRequest.ConstructBaseHttpRequestMessage();
 		var signedRequestMessage = SignRequestMessage(baseRequestMessage);
 
 		var result = Send(signedRequestMessage);
@@ -32,9 +32,9 @@ public class ApiClient(ApiKey apiKey) : HttpClient
 
 	#region Asynchronous methods
 
-	public async Task<HttpResponseMessage> CallEndpointAsync(EndpointBase endpoint)
+	public async Task<HttpResponseMessage> CallEndpointAsync(ApiRequestBase apiRequest)
 	{
-		var baseRequestMessage = endpoint.ConstructBaseHttpRequestMessage();
+		var baseRequestMessage = apiRequest.ConstructBaseHttpRequestMessage();
 		var signedRequestMessage = SignRequestMessage(baseRequestMessage);
 
 		var result = await SendAsync(signedRequestMessage);
