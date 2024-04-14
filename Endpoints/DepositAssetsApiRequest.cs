@@ -21,6 +21,7 @@ public class DepositAssetsApiRequest : ApiRequestBase
 
 	public override HttpMethod Method => HttpMethod.Post;
 	public override string RelativePath => "/marketplace-api/v1/deposit-assets";
+
 	public override object? BodyContent => new
 	{
 		AssetID = AssetIds

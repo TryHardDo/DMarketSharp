@@ -1,8 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Net.Mime;
-using System.Text.Json;
-using DMarketSharp.Helpers;
-using Flurl;
+﻿using DMarketSharp.Helpers;
 
 namespace DMarketSharp;
 

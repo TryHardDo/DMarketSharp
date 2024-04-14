@@ -10,7 +10,7 @@ namespace DMarketSharp.Helpers;
 ///     In normal scenarios you don't need to use this class directly.
 ///     Use the <see cref="DMarketApiClient" /> to make guided calls to the API.
 /// </summary>
-/// <param name="apiKey">The private API key wrapped as an <see cref="ApiKey"/> struct.</param>
+/// <param name="apiKey">The private API key wrapped as an <see cref="ApiKey" /> struct.</param>
 /// <param name="method">The request's method to be signed.</param>
 /// <param name="fullUri">The full <see cref="Uri" /> containing the paths and the query parameters.</param>
 internal sealed class RequestSignature(ApiKey apiKey, HttpMethod method, Uri fullUri)
@@ -20,9 +20,11 @@ internal sealed class RequestSignature(ApiKey apiKey, HttpMethod method, Uri ful
 
 	/// <summary>
 	///     Optional value.
-	///		If the request which needs signature has body content (most likely for POST and PUT methods) it should be set under this property.
-	///		It is important to include the exact same body content like the <see cref="HttpRequestMessage"/> holds to make sure
-	///		we receive a valid authorization signature from the signer algorithm.
+	///     If the request which needs signature has body content (most likely for POST and PUT methods) it should be set under
+	///     this property.
+	///     It is important to include the exact same body content like the <see cref="HttpRequestMessage" /> holds to make
+	///     sure
+	///     we receive a valid authorization signature from the signer algorithm.
 	/// </summary>
 	public string? BodyContent { get; set; } = null;
 
