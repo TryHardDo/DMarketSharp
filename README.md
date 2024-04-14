@@ -47,7 +47,7 @@ internal class Program
 }
 ```
 
-Now the code is ready to send requests to the API. Lets continue our journey and discover how does the `ApiRequestBase.cs` works.
+Now the code is ready to send requests to the API. Let's continue our journey.
 
 The following section is only important for you if you want to implement an API endpoint by yourself.
 For default I pre-coded few endpoints already which also gives you examples to work with.
@@ -55,45 +55,53 @@ For default I pre-coded few endpoints already which also gives you examples to w
 <details>
 <summary>Working with custom api request bases.</summary>
 
-### What is `ApiRequestBase.cs` class and how can I use them?
-It is an abstract class which gives you the ability to make guided and type safe request construction trough your IDE while you are coding your software.
-We can say it is a "request frame" which defines how, when and where we have to put the data to make a successful call.
+### What is ApiRequestBase.cs Class and How Can I Use It?
+The ApiRequestBase.cs class serves as an abstract framework for constructing guided and type-safe requests within your IDE as you develop your software. Think of it as a "request framework" that dictates how, when, and where you should provide data to ensure a successful API call.
 
-The implementation of `ApiRequestBase.cs` defines the following properties for a request:
-- The request type Ex.: *GET, POST, PUT, DELETE* and so on...
-- The relative path from the endpoint URL. Ex.: *We have a full URL -> `https://api.dmarket.com/exchange/v1/market/items?gameId=tf2&limit=50...`. Here we only take the PATH part which is the following -> `/exchange/v1/market/items` and make sure you don't include any of the query parameters!*
-- The URL query parameters, especially for *GET* requests.
-- The request body structure which will be serialized as JSON during request message construction.
+When using `ApiRequestBase.cs`, you have to define the following properties for a valid request:
+- ***Request Type:*** Specifies the HTTP method (e.g., GET, POST, PUT, DELETE).
+- ***Relative Path:*** Refers to the path portion of the endpoint URL. For instance, if the full URL is `https://api.dmarket.com/exchange/v1/market/items?gameId=tf2&limit=50`, the relative path would be `/exchange/v1/market/items`. It's essential to exclude any query parameters.
+- ***URL Query Parameters:*** Especially relevant for GET requests, these parameters are included in the URL.
+- ***Request Body Structure:*** This structure, serialized to JSON during request message construction, defines the content of the request body.
+
+By utilizing ApiRequestBase.cs, you streamline the process of crafting requests, ensuring consistency and adherence to API specifications throughout your development workflow.
 
 ### Implementing `ApiRequestBase.cs`
-Let's create a new fesh class and extend it with `DMarketSharp/Helpers/ApiRequestBase`. After that make sure to implement all the abstract properties from `ApiRequestBase.cs`! There are optonal properties because the `UriQueryParams` and `BodyContent` are `null` by default. Override these if neccesary.
-In this example I implement the balance API endpoint from the DMarket's official API documentation. This one is very simple, it only requires the request method and the relative path.
+1. ***Create a New Class:*** Start by creating a new class and extend it with `DMarketSharp/Helpers/ApiRequestBase`.
+2. ***Implement Abstract Properties:*** Ensure to implement all the abstract properties defined in `ApiRequestBase.cs`. Note that `UriQueryParams` and `BodyContent` are optional properties, defaulting to null. Override them if necessary.
+
+***Example: Balance API Endpoint:*** As an example, let's implement the balance API endpoint from DMarket's official API documentation. This endpoint is straightforward, requiring only the request method and the relative path.
+
 ```csharp
 using DMarketSharp.Helpers;
 
-namespace DMarketSharp.Endpoints;
-
-public class BalanceApiRequest : ApiRequestBase
+namespace MySuperProgram
 {
-	public override HttpMethod Method => HttpMethod.Get;
-	public override string RelativePath => "/account/v1/balance";
+    public class BalanceApiRequest : ApiRequestBase
+    {
+        public override string RequestMethod => "GET";
+        
+        public override string RelativePath => "/path/to/balance/endpoint";
+
+        // Optionally override UriQueryParams and BodyContent properties if needed
+    }
 }
 ```
 
-This is cool right? Now what if we face with a more complex endpoint? Here I show you how you can make a query and a body definition.
+This is indeed an excellent approach! But what if we encounter a more complex endpoint that requires both query parameters and a request body? Let's explore how to define both.
 
-**Query parameter definition:**
-At this point we have two simple ways. You can choose which one is more familiar for you.
-I will show the implementation of `https://api.dmarket.com/exchange/v1/market/items` in both cases.
+**Query Parameter Definition:**
+When it comes to defining query parameters, we have two straightforward options.
+You can choose the one that feels more familiar to you. Below, I'll demonstrate the implementation of the `https://api.dmarket.com/exchange/v1/market/items` endpoint using both approaches.
 
 > [!WARNING]
-> Some endpoints has `.` in it's query key and the anonymous type can't handle that case. If you face with this problem just use the Dictionary version.
+> Some endpoints contain periods `(.)` in their query keys, which anonymous types cannot handle. If you encounter this issue, utilize the dictionary version.
 
-- Using anonymous types:
+- Using C#'s anonymous types:
 ```csharp
 using DMarketSharp.Helpers;
 
-namespace DMarketSharp.Endpoints;
+namespace MySuperProgram;
 
 public class MarketItems(string gameId, string currencyCode) : ApiRequestBase
 {
@@ -135,11 +143,11 @@ public class MarketItems(string gameId, string currencyCode) : ApiRequestBase
 }
 ```
 
-- Using C# dictionary:
+- Using C# native Dictionary:
 ```csharp
 using DMarketSharp.Helpers;
 
-namespace DMarketSharp.Endpoints;
+namespace MySuperProgram;
 
 public class MarketItems(string gameId, string currencyCode) : ApiRequestBase
 {
@@ -181,9 +189,9 @@ public class MarketItems(string gameId, string currencyCode) : ApiRequestBase
 }
 ```
 
-**Body structure definition:**
-You can use the same principle I show you at query construction.
-I show you a way to implement the `https://api.dmarket.com/marketplace-api/v1/deposit-assets` endpoint.
+**Body Structure Definition:**
+Defining the structure of the request body follows a similar principle to query construction.
+Below, I'll demonstrate how to implement the body structure for the `https://api.dmarket.com/marketplace-api/v1/deposit-assets` endpoint.
 
 ```csharp
 using DMarketSharp.Helpers;
@@ -214,19 +222,21 @@ public class DepositAssetsApiRequest : ApiRequestBase
 }
 ```
 
-Basically thats all! Now you should be more familiar with that simple framework works.
+At this stage, you should be more comfortable with this lightweight system. Feel free to continue reading the remaining documentation, where we'll delve into how to make an actual request to the API.
+
+
 </details>
 
-### Sending request to the API
-This part is very easy. Now you should use the `DMarketApiClient` that we instantained before. It has syncronized and asynchronus methods.
-Now I will use the synced version in the following example. Make sure to put the calling code in a try-catch block to handle the possibility of errors during requests and implement your error handling logic.
+### Sending Requests to the API
+This step is straightforward. Utilize the `DMarketApiClient` instance we instantiated earlier, which provides both synchronous and asynchronous methods.
+In the following example, I'll demonstrate using the synchronous version. Remember to wrap your calling code in a try-catch block to handle potential errors during requests, and implement your error-handling logic accordingly.
 
 ```csharp
 using DMarketSharp;
 using DMarketSharp.Endpoints;
 using DMarketSharp.Helpers;
 
-namespace Testing;
+namespace HiReader;
 
 internal class Program
 {
@@ -247,9 +257,15 @@ internal class Program
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine("An error occurred during the API call!");
+			Console.WriteLine("An unexpected error occurred during API call!");
 			Console.WriteLine(ex.ToString());
 		}
 	}
 }
 ```
+
+> ### Disclaimer: Use of this Library
+> Before proceeding, it's important to note that this library is provided for free and comes with no warranties. While every effort has been made to ensure its accuracy and functionality, it's possible that issues may arise with both the code and the accompanying documentation.
+> Users are encouraged to utilize this software at their own discretion and risk. It's recommended to thoroughly review the code and documentation, and to test it in a controlled environment before deploying it in production or mission-critical systems.
+> Please be aware that by using this library, you accept full responsibility for any consequences that may arise from its use, including but not limited to errors, data loss, or system instability.
+> Thank you for your understanding and caution.
